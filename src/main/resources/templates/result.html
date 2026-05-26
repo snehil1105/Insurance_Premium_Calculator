@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Premium Result</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 650px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+            overflow: hidden;
+        }
+
+        .card-header {
+            background: #e8eaf6;
+            padding: 18px 25px;
+            font-weight: 600;
+            color: #1a237e;
+            font-size: 1.1rem;
+        }
+
+        .breakdown {
+            padding: 10px 0;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 25px;
+            border-bottom: 1px solid #f0f0f0;
+            font-size: 0.95rem;
+        }
+
+        .row:last-child { border-bottom: none; }
+
+        .row .label { color: #555; }
+        .row .value { font-weight: 500; color: #222; }
+
+        .row.highlight {
+            background: #fff8e1;
+        }
+
+        .net-premium {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .net-premium .label {
+            font-size: 1rem;
+            opacity: 0.85;
+        }
+
+        .net-premium .amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-top: 8px;
+        }
+
+        .actions {
+            display: flex;
+            gap: 15px;
+            margin-top: 25px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 14px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .btn-back {
+            background: white;
+            color: #1a237e;
+            border: 2px solid #1a237e;
+        }
+
+        .btn-print {
+            background: #1a237e;
+            color: white;
+        }
+
+        .error-box {
+            background: #ffebee;
+            border: 1px solid #ef9a9a;
+            border-radius: 8px;
+            padding: 20px;
+            color: #c62828;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🛡️ Premium Calculation Result</h1>
+</div>
+
+<div class="container">
+
+    <!-- Error message if something went wrong -->
+    <div class="error-box" th:if="${result.errorMessage != null}">
+        <p th:text="${result.errorMessage}"></p>
+    </div>
+
+    <!-- Result breakdown -->
+    <div th:if="${result.errorMessage == null}">
+
+        <div class="card">
+            <div class="card-header"
+                 th:text="${result.vehicleTypeLabel} + ' — Premium Breakdown'">
+            </div>
+
+            <div class="breakdown">
+
+                <div class="row">
+                    <span class="label">Vehicle Age</span>
+                    <span class="value" th:text="${request.vehicleAge}"></span>
+                </div>
+
+                <div class="row">
+                    <span class="label">IDV (Calculated)</span>
+                    <span class="value">₹ <span th:text="${result.idv}"></span></span>
+                </div>
+
+                <div class="row">
+                    <span class="label">IDV (Insured Value)</span>
+                    <span class="value">₹ <span th:text="${result.idv}"></span></span>
+                </div>
+
+                <div class="row">
+                    <span class="label">OD Rate %</span>
+                    <span class="value"><span th:text="${result.odPercent}"></span> %</span>
+                </div>
+
+                <div class="row">
+                    <span class="label">OD Premium</span>
+                    <span class="value">₹ <span th:text="${result.odPremium}"></span></span>
+                </div>
+
+                <div class="row highlight">
+                    <span class="label">Discount (<span th:text="${result.discountPercent}"></span>%)</span>
+                    <span class="value">₹ <span th:text="${result.discountedOdp}"></span></span>
+                </div>
+
+                <div class="row highlight">
+                    <span class="label">NCB (<span th:text="${result.ncbPercent}"></span>%)</span>
+                    <span class="value">₹ <span th:text="${result.odAfterNcb}"></span></span>
+                </div>
+
+                <div class="row">
+                    <span class="label">Third Party (ACT)</span>
+                    <span class="value">₹ <span th:text="${result.actPremium}"></span></span>
+                </div>
+
+                <div class="row" th:if="${result.paPremium > 0}">
+                    <span class="label">PA Cover</span>
+                    <span class="value">₹ <span th:text="${result.paPremium}"></span></span>
+                </div>
+
+                <div class="row" th:if="${result.zeroDepthPremium > 0}">
+                    <span class="label">Zero Depth Add-on</span>
+                    <span class="value">₹ <span th:text="${result.zeroDepthPremium}"></span></span>
+                </div>
+
+                <div class="row" th:if="${result.unnamedPassengerPremium > 0}">
+                    <span class="label">Unnamed Passenger Premium</span>
+                    <span class="value">₹ <span th:text="${result.unnamedPassengerPremium}"></span></span>
+                </div>
+
+                <div class="row" th:if="${result.unnamedLabourPremium > 0}">
+                    <span class="label">Unnamed Labour Premium</span>
+                    <span class="value">₹ <span th:text="${result.unnamedLabourPremium}"></span></span>
+                </div>
+
+                <div class="row" th:if="${result.llPremium > 0}">
+                    <span class="label">LL to Paid Driver</span>
+                    <span class="value">₹ <span th:text="${result.llPremium}"></span></span>
+                </div>
+
+                <div class="row">
+                    <span class="label"><strong>Total (Before GST)</strong></span>
+                    <span class="value"><strong>₹ <span th:text="${result.totalBeforeGst}"></span></strong></span>
+                </div>
+
+                <div class="row">
+                    <span class="label">GST</span>
+                    <span class="value">₹ <span th:text="${result.gstAmount}"></span></span>
+                </div>
+
+            </div>
+
+            <div class="net-premium">
+                <div class="label">NET PREMIUM PAYABLE</div>
+                <div class="amount">₹ <span th:text="${result.netPremium}"></span></div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <a href="/" class="btn btn-back">← Calculate Again</a>
+            <button onclick="window.print()" class="btn btn-print">🖨️ Print Quote</button>
+        </div>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Vehicle Insurance Calculator</title>
+    <link rel="icon" href="data:,">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+            min-height: 100vh;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 { font-size: 2rem; }
+        .header p  { margin-top: 8px; opacity: 0.85; }
+
+        .container {
+            max-width: 1100px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 1.3rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px 20px;
+            text-align: center;
+            text-decoration: none;
+            color: #1a237e;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            transition: all 0.2s ease;
+            border: 2px solid transparent;
+        }
+
+        .card:hover {
+            border-color: #1a237e;
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(26,35,126,0.15);
+        }
+
+        .card .icon { font-size: 3rem; margin-bottom: 15px; }
+        .card h3    { font-size: 1rem; font-weight: 600; }
+        .card p     { font-size: 0.8rem; color: #666; margin-top: 6px; }
+
+        .footer {
+            text-align: center;
+            padding: 30px;
+            color: #888;
+            font-size: 0.85rem;
+        }
+    </style>
+</head>
+<body>
+
+<div class="header">
+    <h1>🛡️ Vehicle Insurance Premium Calculator</h1>
+    <p>Select your vehicle type to calculate insurance premium</p>
+</div>
+
+<div class="container">
+    <p class="section-title">Choose Vehicle Type</p>
+
+    <div class="grid">
+
+        <a href="/form?type=TW" class="card">
+            <div class="icon">🏍️</div>
+            <h3>Two Wheeler</h3>
+            <p>Bike / Scooter</p>
+        </a>
+
+        <a href="/form?type=PC" class="card">
+            <div class="icon">🚗</div>
+            <h3>Private Car</h3>
+            <p>Personal Car / SUV</p>
+        </a>
+
+        <a href="/form?type=COM_GOODS" class="card">
+            <div class="icon">🚛</div>
+            <h3>Commercial Goods</h3>
+            <p>Truck / Commercial Vehicle</p>
+        </a>
+
+        <a href="/form?type=PVT_GOODS" class="card">
+            <div class="icon">🚚</div>
+            <h3>Private Goods</h3>
+            <p>Private Goods Carrier</p>
+        </a>
+
+        <a href="/form?type=TAXI" class="card">
+            <div class="icon">🚕</div>
+            <h3>Taxi</h3>
+            <p>Cab / Taxi upto 6 Passengers</p>
+        </a>
+
+        <a href="/form?type=3W_PASS" class="card">
+            <div class="icon">🛺</div>
+            <h3>3 Wheeler Passenger</h3>
+            <p>Auto / E-Rickshaw</p>
+        </a>
+
+        <a href="/form?type=3W_GOODS" class="card">
+            <div class="icon">🛵</div>
+            <h3>3 Wheeler Goods</h3>
+            <p>Goods Auto / E-Rickshaw</p>
+        </a>
+
+        <a href="/form?type=TRACTOR" class="card">
+            <div class="icon">🚜</div>
+            <h3>Tractor</h3>
+            <p>Agriculture / Special Vehicle</p>
+        </a>
+
+    </div>
+</div>
+
+<div class="footer">
+    Premium calculated as per IRDAI guidelines
+</div>
+
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="UTF-8">
+    <title>3 Wheeler Goods Insurance</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #f0f4f8;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #1a237e, #283593);
+            color: white;
+            padding: 25px 30px;
+            text-align: center;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.08);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            color: #333;
+            font-size: 0.9rem;
+        }
+
+        select,
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            color: #333;
+            background: #fafafa;
+        }
+
+        select:focus,
+        input:focus {
+            outline: none;
+            border-color: #1a237e;
+            background: white;
+        }
+
+        .checkbox-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            background: #fafafa;
+        }
+
+        .checkbox-group input {
+            width: auto;
+        }
+
+        .btn-submit {
+            width: 100%;
+            padding: 15px;
+            background: #1a237e;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            background: #283593;
+        }
+
+        .btn-back {
+            display: block;
+            text-align: center;
+            margin-top: 15px;
+            color: #1a237e;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <h1>🛵 3 Wheeler Goods Insurance</h1>
+        <p>Fill in the details to calculate premium</p>
+    </div>
+
+    <div class="container">
+        <div class="card">
+
+            <form th:action="@{/calculate}"
+                  th:object="${request}"
+                  method="post">
+
+                <input type="hidden" th:field="*{vehicleType}" />
+
+                <div class="form-group">
+                    <label>Vehicle Subtype</label>
+                    <select th:field="*{vehicleSubType}">
+                        <option value="COMMERCIAL">Commercial</option>
+                        <option value="PRIVATE">Private</option>
+                    </select>
+                </div>
+
+                                <!-- Vehicle Age — for depreciation calculation -->
+                <div class="form-group">
+                    <label>Vehicle Age</label>
+                    <select th:field="*{vehicleAge}">
+                        <option value="UPTO_5">Up to 5 Years</option>
+                        <option value="5-7">5 to 7 Years</option>
+                        <option value=">7">Above 7 Years</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>IDV (Insured Declared Value) ₹</label>
+                    <input type="number"
+                           th:field="*{idv}"
+                           placeholder="e.g. 500000"
+                           min="0" />
+                </div>
+
+                <div class="form-group">
+                    <label>Discount % given to customer</label>
+                    <select th:field="*{discountPercent}">
+                        <option value="0">0%</option>
+                        <option value="10">10%</option>
+                        <option value="20">20%</option>
+                        <option value="30">30%</option>
+                        <option value="40">40%</option>
+                        <option value="50">50%</option>
+                        <option value="60">60%</option>
+                        <option value="70">70%</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>NCB % (No Claim Bonus)</label>
+                    <select th:field="*{ncbPercent}">
+                        <option value="0">0% - New / No NCB</option>
+                        <option value="20">20%</option>
+                        <option value="25">25%</option>
+                        <option value="35">35%</option>
+                        <option value="45">45%</option>
+                        <option value="50">50%</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label>PA Cover</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" th:field="*{paRequired}" />
+                        <span>Include PA Cover (₹275)</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Zero Depth Add-on</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" th:field="*{zeroDepthRequired}" />
+                        <span>Include Zero Depreciation Cover</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>LL to Paid Driver</label>
+                    <div class="checkbox-group">
+                        <input type="checkbox" th:field="*{llToDriver}" />
+                        <span>Include LL to Paid Driver (₹50)</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-submit">
+                    Calculate Premium →
+                </button>
+
+            </form>
+
+            <a href="/" class="btn-back">← Back to Home</a>
+
+        </div>
+    </div>
+
+</body>
+</html>
