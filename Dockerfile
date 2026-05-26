@@ -1,9 +1,10 @@
-FROM eclipse-temurin:17
+FROM eclipse-temurin:21
 
 WORKDIR /app
 
 COPY . .
 
+RUN sed -i 's/\r$//' mvnw
 RUN chmod +x mvnw
 
 RUN ./mvnw clean package -DskipTests
